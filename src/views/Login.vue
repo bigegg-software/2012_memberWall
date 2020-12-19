@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <div class="loginName">员工墙</div>
+    <div class="loginName">员工墙大屏展示</div>
     <a-form
       id="components-form-demo-normal-login"
       :form="form"
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import Parse from "@/parse/index.js";
+
 export default {
   name: "Login",
   data() {
@@ -63,11 +65,17 @@ export default {
   methods: {
     handleSubmit(e) {
       e.preventDefault();
-      this.form.validateFields((err, values) => {
+      this.form.validateFields(async (err, values) => {
         if (!err) {
-          alert("登录成功");
-          window.location.href = "/index.vue";
-          console.log("Received values of form: ", values);
+          try {
+            const user = await Parse.User.logIn(
+              values.userName,
+              values.password
+            );
+            this.$router.push({ path: "/" });
+          } catch (error) {
+            this.$message.warning("用户或密码错误");
+          }
         }
       });
     }

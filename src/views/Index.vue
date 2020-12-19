@@ -5,7 +5,7 @@
     class="seamless-warp2"
     id="seamless-warp2"
   >
-    <ul class="scrollBox" :style="{ height: height, width: 'auto' }">
+    <ul class="scrollBox" :style="{ height: height }">
       <li class="staff" v-for="(item, index) in staffList" :key="index">
         <div class="staffContent" v-for="(items, i) in item" :key="i">
           <div class="staffPhoto">
@@ -15,7 +15,7 @@
             <div class="staffname">{{ items.name }}</div>
             <div class="department">
               {{
-                items.departList
+              items.departList
               }}
             </div>
           </div>
@@ -35,7 +35,7 @@ export default {
     return {
       height: 0, //页面高度
       count: 0,
-      staffList: [], //员工列表
+      staffList: [] //员工列表
     };
   },
   computed: {
@@ -43,51 +43,48 @@ export default {
       return {
         direction: 2,
         limitMoveNum: 2,
-        // step: 0.2, // 数值越大速度滚动越快
+        step: 0.4 // 数值越大速度滚动越快
       };
-    },
-    staffListq() {
-      if (document.querySelector(".scrollBox")) {
-        // console.log(document.querySelector('.scrollBox').style.width)
-        // document.querySelector('.scrollBox').parentNode.parentNode.style.width=56024*2+'px';
-        // document.querySelector('.scrollBox').parentNode.parentNode.style.width=Math.ceil(this.staffList.length/2)*376+'px';
-        // document.querySelector('.scrollBox').parentNode.parentNode.style.width=document.querySelector('.scrollBox').style.width*2+'px';
-      }
-
-      console.log(Math.ceil(this.staffList.length) * 362 + "px");
-      return Math.ceil(this.staffList.length / 2) * 376 + "px";
-    },
+    }
+  },
+  created() {
+    let currentUser = Parse.User.current();
+    if (currentUser) {
+      // do stuff with the user
+    } else {
+      this.$router.push({ path: "/login" });
+    }
   },
   mounted() {
-    this.getUserList()
+    this.getUserList();
     (this.height =
-      document.getElementById("seamless-warp2").offsetHeight - 20 + "px"), //页面高度
+      document.getElementById("seamless-warp2").offsetHeight - 20 + "px"),
       this.refreshTable(); //窗体刷新
   },
   methods: {
     async getUserList() {
       let query = new Parse.Query("Member");
-      let staff = []
-      await query.each((item) => {
-        item = item.toJSON()
-        let departList = item.departList.map(a=>{
-          return a = a.name
-        })
-        item.departList = departList.join('-')
+      let staff = [];
+      query.equalTo("active", true);
+      await query.each(item => {
+        item = item.toJSON();
+        let departList = item.departList.map(a => {
+          return (a = a.name);
+        });
+        item.departList = departList.join("-");
         staff.push(item);
       });
-      let staffArr = []
-      if (staff%2 != 0){
-        staff.push(staff[0])
+      let staffArr = [];
+
+      if (staff.length % 2 != 0) {
+        staff.push(staff[0]);
       }
-      for(let i = 0; i < staff.length;){
-        staffArr.push(staff.splice(i,2))
+      for (let i = 0; i < staff.length; ) {
+        staffArr.push([staff[i], staff[i + 1]]);
         i += 2;
       }
-      console.log("staff",staff);
-      this.staffList = staffArr
+      this.staffList = staffArr;
     },
-
     //页面刷新
     refreshTable() {
       let that = this;
@@ -97,8 +94,8 @@ export default {
             document.getElementById("seamless-warp2").offsetHeight - 20 + "px";
         })();
       };
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -130,7 +127,8 @@ export default {
   justify-content: space-between;
   align-items: center;
   width: 1.88rem;
-  height: 2.2rem;
+  /* height: 2.2rem; */
+  height: 49%;
   padding: 0.1rem 0.104167rem 0.09rem;
   box-sizing: border-box;
   background: #fff;

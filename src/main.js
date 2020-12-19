@@ -5,14 +5,12 @@ import store from './store'
 import './utils/lib-flexible' // 根据屏幕宽度，自动设置html的font-size
 
 import scroll from 'vue-seamless-scroll'//无缝滚动
-// import { Form ,input,Icon} from 'ant-design-vue';
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 Vue.use(Antd)
 
 import axios from 'axios'
 Vue.prototype.$axios = axios
-// Vue.use(Form,input,Icon);
 Vue.use(scroll)
 
 Vue.config.productionTip = false
