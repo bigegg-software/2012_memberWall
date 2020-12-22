@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <div class="content">
     <div class="loginName">员工墙大屏展示</div>
     <a-form
       id="components-form-demo-normal-login"
@@ -8,7 +9,7 @@
       @submit="handleSubmit"
     >
       <a-form-item>
-        <a-input
+        <a-input 
           v-decorator="[
           'userName',
           { rules: [{ required: true, message: '请输入用户名!' },{requiredValue:'admin',message:'用户或密码错误'}] },
@@ -46,6 +47,7 @@
         <a href>立即注册</a>-->
       </a-form-item>
     </a-form>
+    </div>
   </div>
 </template>
 
@@ -91,15 +93,29 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
+  background: url("../assets/bg_img.jpg") center/cover no-repeat;
+}
+.content{
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 2.8rem;
+  border-radius: .05rem;
+  background: rgba(255, 255, 255, 0.9);
 }
 .loginName {
   font-size: 0.260417rem;
   font-weight: bold;
   font-family: "SimHei";
-  margin-bottom: 0.208333rem;
+  margin-bottom: 0.4rem;
 }
 #components-form-demo-normal-login {
-  width: 3rem;
+  width: 2.2rem;
+}
+#components-form-demo-normal-login /deep/.ant-input{
+  border: 1px solid #ccc;
 }
 #components-form-demo-normal-login .login-form-forgot {
   float: right;
